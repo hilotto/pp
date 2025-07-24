@@ -1,28 +1,25 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import StartScreen from './src/screens/StartScreen';
+import MainScreen from './src/screens/MainScreen';
+import ListScreen from './src/screens/ListScreen';
+import ListScreen2 from './src/screens/ListScreen2';
+import FlexionDetailScreen from './src/screens/FlexionDetailScreen';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+const Stack = createStackNavigator();
 
+export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Start" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Start" component={StartScreen} />
+        <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="List" component={ListScreen} />
+        <Stack.Screen name="List2" component={ListScreen2} />
+        <Stack.Screen name="FlexionDetail" component={FlexionDetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
