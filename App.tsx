@@ -7,6 +7,7 @@ import MainScreen from './src/screens/MainScreen';
 import ListScreen from './src/screens/ListScreen';
 import ListScreen2 from './src/screens/ListScreen2';
 import FlexionDetailScreen from './src/screens/FlexionDetailScreen';
+import CameraWithOverlayScreen from './src/screens/CameraWithOverlayScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name="List" component={ListScreen} />
         <Stack.Screen name="List2" component={ListScreen2} />
         <Stack.Screen name="FlexionDetail" component={FlexionDetailScreen} />
+        <Stack.Screen name="CameraWithOverlay" component={CameraWithOverlayScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

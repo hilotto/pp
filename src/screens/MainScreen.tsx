@@ -47,23 +47,23 @@ export default function MainScreen({ navigation }: Props) {
 
       {/* 🔵🔴 관절 포인트 */}
       {/* 어깨 */}
-      <TouchableOpacity onPress={() => navigation.navigate('List')} style={[styles.point, styles.blue, { top: 295, left: 108 }]} />
-      <TouchableOpacity onPress={() => navigation.navigate('List2')} style={[styles.point, styles.red, { top: 295, right: 108 }]} />
+      <TouchableOpacity onPress={() => navigation.navigate('List')} style={[styles.point, styles.blue, { top: 280, left: 105 }]} />
+      <TouchableOpacity onPress={() => navigation.navigate('List2')} style={[styles.point, styles.red, { top: 280, right: 105 }]} />
       {/* 팔꿈치 */}
-      <View style={[styles.point, styles.blue, { top: 400, left: 90 }]} />
-      <View style={[styles.point, styles.red, { top: 400, right: 90 }]} />
+      <View style={[styles.point, styles.blue, { top: 390, left: 85 }]} />
+      <View style={[styles.point, styles.red, { top: 390, right: 85 }]} />
       {/* 손목 */}
-      <View style={[styles.point, styles.blue, { top: 490, left: 70 }]} />
-      <View style={[styles.point, styles.red, { top: 490, right: 70 }]} />
+      <View style={[styles.point, styles.blue, { top: 475, left: 65 }]} />
+      <View style={[styles.point, styles.red, { top: 475, right: 65 }]} />
       {/* 골반 */}
-      <View style={[styles.point, styles.blue, { top: 490, left: 140 }]} />
-      <View style={[styles.point, styles.red, { top: 490, right: 140 }]} />
+      <View style={[styles.point, styles.blue, { top: 480, left: 135 }]} />
+      <View style={[styles.point, styles.red, { top: 480, right: 135 }]} />
       {/* 무릎 */}
-      <View style={[styles.point, styles.blue, { top: 610, left: 150 }]} />
-      <View style={[styles.point, styles.red, { top: 610, right: 150 }]} />
+      <View style={[styles.point, styles.blue, { top: 600, left: 145 }]} />
+      <View style={[styles.point, styles.red, { top: 600, right: 145 }]} />
       {/* 발목 */}
-      <View style={[styles.point, styles.blue, { top: 730, left: 150 }]} />
-      <View style={[styles.point, styles.red, { top: 730, right: 150 }]} />
+      <View style={[styles.point, styles.blue, { top: 720, left: 145 }]} />
+      <View style={[styles.point, styles.red, { top: 720, right: 145 }]} />
     </View>
   );
 }

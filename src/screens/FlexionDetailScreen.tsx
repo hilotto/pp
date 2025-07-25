@@ -3,13 +3,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Video from 'react-native-video';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { launchCamera } from 'react-native-image-picker';
 
 type RootStackParamList = {
   Start: undefined;
   Main: undefined;
   List: undefined;
   FlexionDetail: undefined;
+  CameraWithOverlay: undefined; // ✅ VisionCamera 화면 추가
 };
 
 type Props = {
@@ -17,27 +17,11 @@ type Props = {
 };
 
 export default function FlexionDetailScreen({ navigation }: Props) {
-  // ✅ Start 버튼 클릭 시 카메라 실행
-const handleStartCamera = () => {
-  console.log('🔵 Start 버튼 눌림'); // ← 버튼 클릭 확인 로그
-  launchCamera(
-    {
-      mediaType: 'video',
-      cameraType: 'back',
-      videoQuality: 'high',
-    },
-    (response) => {
-      console.log('📷 카메라 응답:', response); // ← 실행 로그
-      if (response.didCancel) {
-        console.log('❌ 사용자가 카메라 실행을 취소했습니다.');
-      } else if (response.errorCode) {
-        console.error('🚨 카메라 실행 오류:', response.errorMessage);
-      } else {
-        console.log('✅ 녹화 시작 성공');
-      }
-    }
-  );
-};
+  // ✅ Start 버튼 클릭 시 VisionCamera 화면으로 이동
+  const handleStartCamera = () => {
+    console.log('🔵 Start 버튼 눌림 - VisionCamera 화면으로 이동');
+    navigation.navigate('CameraWithOverlay');
+  };
 
   return (
     <View style={styles.container}>
@@ -52,7 +36,7 @@ const handleStartCamera = () => {
       <Text style={styles.title}>Flexion</Text>
       <Text style={styles.subtitle}>(굽힘)</Text>
 
-      {/* 🎥 영상 */}
+      {/* 🎥 시연 영상 */}
       <Video
         source={require('../../assets/videos/flexion.mp4')}
         style={styles.video}
@@ -62,8 +46,6 @@ const handleStartCamera = () => {
 
       {/* 📋 설명 */}
       <Text style={styles.instructionTitle}>Instructions(요령)</Text>
-
-      {/* ✅ 중간 안내 문장 */}
       <Text style={styles.description}>
         영상을 따라 동작을 정확하게 수행하세요.{'\n'}
         팔을 옆구리에 대고 똑바로 선 후,{'\n'}
@@ -90,7 +72,7 @@ const styles = StyleSheet.create({
   backIcon: { width: 30, height: 30 },
   title: { fontSize: 24, fontWeight: 'bold', color: '#1a1a1a', marginTop: 10 },
   subtitle: { fontSize: 16, color: '#555' },
-  video: { width: '88.4%', height: 250, marginVertical: 20 }, // ✅ 높이 키움
+  video: { width: '88.4%', height: 250, marginVertical: 20 },
   instructionTitle: { fontSize: 22, fontWeight: 'bold', marginTop: 0 },
   description: {
     fontSize: 15,
