@@ -1,9 +1,10 @@
+// src/screens/CameraWithOverlayScreen.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
-// import CameraRoll from '@react-native-camera-roll/camera-roll'; // 필요시 주석 해제
+import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 
-export default function CameraWithOverlayScreen() {
+export default function CameraWithOverlayScreen({ navigation }: any) {
   const [hasPermission, setHasPermission] = useState(false);
   const [permissionChecked, setPermissionChecked] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
@@ -19,16 +20,23 @@ export default function CameraWithOverlayScreen() {
       setHasPermission(newStatus === 'granted');
       setPermissionChecked(true);
     })();
-
     const timer = setTimeout(() => setShowOverlay(false), 5000);
     return () => clearTimeout(timer);
   }, []);
 
   if (!permissionChecked) {
-    return <View style={styles.loading}><Text style={{ color: '#fff' }}>카메라 권한 확인 중...</Text></View>;
+    return (
+      <View style={styles.loading}>
+        <Text style={{ color: '#fff' }}>카메라 권한 확인 중...</Text>
+      </View>
+    );
   }
   if (device == null) {
-    return <View style={styles.loading}><Text style={{ color: '#fff' }}>카메라 장치를 찾을 수 없습니다.</Text></View>;
+    return (
+      <View style={styles.loading}>
+        <Text style={{ color: '#fff' }}>카메라 장치를 찾을 수 없습니다.</Text>
+      </View>
+    );
   }
   if (!hasPermission) {
     return (
@@ -41,7 +49,6 @@ export default function CameraWithOverlayScreen() {
     );
   }
 
-  // ▶️ 메인 화면
   return (
     <View style={styles.container}>
       {/* 카메라 미리보기 */}
@@ -49,7 +56,7 @@ export default function CameraWithOverlayScreen() {
         ref={camera}
         style={StyleSheet.absoluteFill}
         device={device}
-        isActive={previewUri == null} // 촬영 후에는 카메라 정지(선택사항)
+        isActive={previewUri == null}
         photo={true}
       />
 
@@ -63,22 +70,31 @@ export default function CameraWithOverlayScreen() {
         </View>
       )}
 
-      
-
       {/* 하단 버튼 (재촬영 / 사진 사용) */}
       {previewUri && (
         <View style={styles.bottomButtonContainer}>
           <TouchableOpacity
             style={[styles.bottomButton, styles.retakeButton]}
-            onPress={() => setPreviewUri(null)} // 재촬영
+            onPress={() => setPreviewUri(null)}
           >
             <Text style={styles.bottomButtonText}>재촬영</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.bottomButton, styles.usePhotoButton]}
-            onPress={() => {
-              Alert.alert('사진 사용', '사진을 사용할 준비가 되었습니다!');
-              // 예: navigation.navigate('다음화면', { uri: previewUri });
+            onPress={async () => {
+              if (previewUri) {
+                try {
+                  await CameraRoll.save('file://' + previewUri, { type: 'photo' });
+                  Alert.alert('저장 완료!', '사진이 갤러리에 저장되었습니다.');
+                  // 👉 결과 화면으로 이동
+                  navigation.navigate('Result', {
+                    score: 90,
+                    angle: 160,
+                  });
+                } catch (error) {
+                  Alert.alert('저장 실패', String(error));
+                }
+              }
             }}
           >
             <Text style={styles.bottomButtonText}>해당 사진 사용</Text>
@@ -101,7 +117,6 @@ export default function CameraWithOverlayScreen() {
                   enableShutterSound: false,
                 });
                 setPreviewUri(photo.path);
-                // await CameraRoll.save(`file://${photo.path}`, { type: 'photo' }); // 필요시 카메라롤 저장
               } else {
                 Alert.alert('에러', '카메라가 준비되지 않았습니다.');
               }

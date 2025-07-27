@@ -1,3 +1,4 @@
+// src/screens/ListScreen.tsx
 import React from 'react';
 import {
   View,
@@ -8,12 +9,12 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-// 🔁 네비게이션 타입 정의
 type RootStackParamList = {
   Start: undefined;
   Main: undefined;
   List: undefined;
   List2: undefined;
+  FlexionDetail2: undefined;  // 추가!
 };
 
 type ListScreen2NavigationProp = StackNavigationProp<
@@ -50,7 +51,15 @@ export default function ListScreen2({ navigation }: Props) {
 
       {/* 🔵 버튼 목록 */}
       {motions.map((motion, idx) => (
-        <TouchableOpacity key={idx} style={styles.motionBox}>
+        <TouchableOpacity
+          key={idx}
+          style={styles.motionBox}
+          onPress={() => {
+            if (motion.label === 'Flexion') {
+              navigation.navigate('FlexionDetail2');
+            }
+          }}
+        >
           <View style={styles.iconCircle}>
             <Text style={styles.iconText}>{motion.icon}</Text>
           </View>

@@ -1,3 +1,4 @@
+// src/screens/MainScreen.tsx
 import React from 'react';
 import {
   View,

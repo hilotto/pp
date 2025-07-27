@@ -1,4 +1,4 @@
-// src/screens/FlexionDetailScreen.tsx
+// src/screens/FlexionDetailScreen2.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Video from 'react-native-video';
@@ -8,16 +8,16 @@ type RootStackParamList = {
   Start: undefined;
   Main: undefined;
   List: undefined;
-  FlexionDetail: undefined;
+  FlexionDetail2: undefined;
   MirrorCheck: undefined;         // ⭐️ 추가
   CameraWithOverlay: undefined;
 };
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'FlexionDetail'>;
+  navigation: StackNavigationProp<RootStackParamList, 'FlexionDetail2'>;
 };
 
-export default function FlexionDetailScreen({ navigation }: Props) {
+export default function FlexionDetailScreen2({ navigation }: Props) {
   // ⭐️ Start 버튼 클릭 시 MirrorCheckScreen으로 이동
   const handleStartCamera = () => {
     console.log('🔵 Start 버튼 눌림 - MirrorCheckScreen으로 이동');

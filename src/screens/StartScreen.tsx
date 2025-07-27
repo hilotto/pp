@@ -1,3 +1,4 @@
+// src/screens/StartScreen.tsx
 import React from 'react';
 import {
   SafeAreaView,
