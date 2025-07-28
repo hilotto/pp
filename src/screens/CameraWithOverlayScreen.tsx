@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
+import UserAxios from '../axiosInstance/UserAxios';
 
 export default function CameraWithOverlayScreen({ navigation }: any) {
   const [hasPermission, setHasPermission] = useState(false);
@@ -84,15 +85,23 @@ export default function CameraWithOverlayScreen({ navigation }: any) {
             onPress={async () => {
               if (previewUri) {
                 try {
+                  // (선택) 갤러리에 저장
                   await CameraRoll.save('file://' + previewUri, { type: 'photo' });
-                  Alert.alert('저장 완료!', '사진이 갤러리에 저장되었습니다.');
-                  // 👉 결과 화면으로 이동
+
+                  // ⭐️ 핵심: 서버로 사진 전송 (file 파라미터)
+                  const result = await UserAxios.uploadImage('file://' + previewUri);
+
+                  console.log('서버 응답:', result);
+
+                  // 결과 화면 이동
                   navigation.navigate('Result', {
-                    score: 90,
-                    angle: 160,
+                    score: result?.score ?? 90,
+                    angle: result?.angle ?? 160,
+                    label: result?.label ?? '',
+                    prob: result?.prob,
                   });
-                } catch (error) {
-                  Alert.alert('저장 실패', String(error));
+                } catch (error: any) {
+                  Alert.alert('오류', error?.message || String(error));
                 }
               }
             }}
