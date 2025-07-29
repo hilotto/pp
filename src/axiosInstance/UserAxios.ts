@@ -2,7 +2,6 @@ import initializeAxios from "./baseInstance";
 
 const apiInstance = initializeAxios.initializeAxios();
 
-// 👇 file:// 보정 함수 추가
 const getFileUri = (uri: string) => {
   if (uri.startsWith('file://')) return uri;
   return 'file://' + uri;
@@ -13,29 +12,34 @@ const UserAxios = {
     try {
       const formData = new FormData();
       formData.append('file', {
-        uri: getFileUri(imageUri), // <- 항상 file://로 보정!
-        name: 'photo.jpg',         // 실제 파일명/확장자에 맞게 수정 가능
-        type: 'image/jpeg',        // png면 image/png
+        uri: getFileUri(imageUri),
+        name: 'photo.jpg',
+        type: 'image/jpeg',
       } as any);
 
-      // 반드시 headers를 지정!
       const response = await apiInstance.post('analyze/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-
-      return response.data;
-    } catch (error) {
-      throw new Error('이미지 업로드 실패: ' + String(error));
+      // interceptors에서 이미 .data만 남아있음
+      return response;
+    } catch (error: any) {
+      console.log('[이미지 업로드 오류]', error);
+      if (error.response) {
+        console.log('[서버 응답]', error.response);
+        throw new Error('이미지 업로드 실패: ' + JSON.stringify(error.response));
+      } else if (error.request) {
+        console.log('[요청만 감]', error.request);
+        throw new Error('이미지 업로드 실패: 서버 응답 없음');
+      } else {
+        throw new Error('이미지 업로드 실패: ' + String(error));
+      }
     }
   },
 
-  // 기존 함수 (JSON 요청)
   getUser: async (data: any) => {
     try {
       const response = await apiInstance.post('analyze/', data);
-      return response.data;
+      return response;
     } catch (error) {
       throw new Error('Failed to fetch user');
     }
@@ -43,7 +47,7 @@ const UserAxios = {
   getTest: async (data: any) => {
     try {
       const response = await apiInstance.post('test/', data);
-      return response.data;
+      return response;
     } catch (error) {
       throw new Error('Failed to fetch user');
     }

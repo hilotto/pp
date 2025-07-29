@@ -22,7 +22,7 @@ export type RootStackParamList = {
   FlexionDetail: undefined;
   FlexionDetail2: undefined;
   CameraWithOverlay: undefined;
-  Result: { score?: number; angle?: number }; // 반드시 포함!
+  Result: {result?: { label?: string; prob?: number };label?: number; prob?: number;  score?: number; angle?: number }; // 반드시 포함!
   MirrorCheck: undefined;
 };
 

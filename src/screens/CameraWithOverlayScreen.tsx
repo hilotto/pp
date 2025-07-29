@@ -1,9 +1,15 @@
 // src/screens/CameraWithOverlayScreen.tsx
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import UserAxios from '../axiosInstance/UserAxios';
+
+// 파일 uri 항상 file:// prefix 보장
+const getFileUri = (uri: string) => {
+  if (!uri.startsWith('file://')) return 'file://' + uri;
+  return uri;
+};
 
 export default function CameraWithOverlayScreen({ navigation }: any) {
   const [hasPermission, setHasPermission] = useState(false);
@@ -85,20 +91,16 @@ export default function CameraWithOverlayScreen({ navigation }: any) {
             onPress={async () => {
               if (previewUri) {
                 try {
-                  // (선택) 갤러리에 저장
-                  await CameraRoll.save('file://' + previewUri, { type: 'photo' });
+                  // (선택) 앨범에 저장
+                  await CameraRoll.save(getFileUri(previewUri), { type: 'photo' });
 
-                  // ⭐️ 핵심: 서버로 사진 전송 (file 파라미터)
-                  const result = await UserAxios.uploadImage('file://' + previewUri);
-
+                  // ⭐️ 서버로 전송
+                  const result = await UserAxios.uploadImage(getFileUri(previewUri));
                   console.log('서버 응답:', result);
-
-                  // 결과 화면 이동
+                  
+                  // 결과 화면 이동 (결과값을 route 파라미터로 넘김)
                   navigation.navigate('Result', {
-                    score: result?.score ?? 90,
-                    angle: result?.angle ?? 160,
-                    label: result?.label ?? '',
-                    prob: result?.prob,
+                    result, // result 객체 전체를 params로 전달
                   });
                 } catch (error: any) {
                   Alert.alert('오류', error?.message || String(error));
